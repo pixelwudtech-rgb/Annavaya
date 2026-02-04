@@ -1,0 +1,65 @@
+---
+/* StoreSection.astro */
+/* Uses Astro + TailwindCSS */
+/* Clean, semantic, responsive, production-ready */
+
+const storeImages = [
+  {
+    src: "/images/store-front.jpg",
+    alt: "VG Hardware & Electricals Storefront",
+  },
+  {
+    src: "/images/store-interior-1.jpg",
+    alt: "Decorative Lights Section",
+  },
+  {
+    src: "/images/store-interior-2.jpg",
+    alt: "Ceiling Fan Display",
+  },
+];
+---
+
+<section class=" text-black py-20">
+  <div class="max-w-screen-2xl mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-2 gap-8">
+    
+    <!-- LEFT CONTENT -->
+    <article class="flex flex-col justify-center space-y-6">
+  <header class="space-y-4">
+    <p class="text-sm tracking-wide text-[#00945A] uppercase">Our Store</p>
+
+    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-semibold leading-tight text-[#00945A]">
+      Welcome to<br />Keerai World
+    </h1>
+  </header>
+
+  <p class="text-[#00945A]/80 leading-relaxed max-w-md">
+    Welcome to Keerai World, where freshness, purity, and nutrition come together.
+  We offer a carefully selected range of farm-fresh keerai, grown with care and
+  delivered at peak quality. From everyday home cooking to restaurants and bulk
+  buyers, our leafy greens are trusted for their natural goodness, rich nutrients,
+  and consistent freshness supporting healthier meals every day.
+  </p>
+
+  <a href="/Contact" class="text-sm font-semibold tracking-wide mt-4 hover:opacity-80 text-black/50">
+    LEARN MORE
+  </a>
+</article>
+
+
+    <!-- RIGHT IMAGES SECTION -->
+    <div class="flex flex-col gap-6">
+  <div class="relative w-full h-64 sm:h-80 lg:h-full rounded-[3rem] overflow-hidden">
+   <video
+          class="absolute inset-0 w-full h-full object-cover"
+          src="/Video/keerai (2).mp4"
+          autoplay
+          muted
+          loop
+          playsinline
+        ></video>
+
+  </div>
+</div>
+
+  </div>
+</section>

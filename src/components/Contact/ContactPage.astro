@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Keerai World – Contact Us</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      #toast {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: rgba(0, 0, 0, 0.9);
+        color: #a7f3d0;
+        padding: 14px 22px;
+        border-radius: 14px;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.4s ease;
+        font-size: 15px;
+        z-index: 1000;
+        font-weight: 500;
+        backdrop-filter: blur(10px);
+      }
+      #toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+
+  <body class="antialiased overflow-x-hidden bg-white/50">
+
+    <!-- CONTACT SECTION -->
+    <section class="py-24">
+      <div
+        class="max-w-screen-2xl sm:w-full md:w-[75%] lg:w-[80%] xl:w-[75%]
+        mx-auto grid md:grid-cols-2 gap-16 px-6 items-center"
+      >
+
+        <!-- LEFT CONTENT -->
+        <div class="space-y-6">
+          <h2 class="text-4xl font-extrabold tracking-tight text-[#00945A] leading-tight">
+            Fresh Keerai for Healthy Everyday Living
+          </h2>
+
+          <p class="text-[#00945A]/70 text-lg leading-relaxed">
+            At <span class="font-semibold text-[#00945A]">Keerai World</span>, we
+            bring you farm fresh leafy greens and traditional superfoods grown
+            with care. Our focus is on freshness, purity, and natural nutrition 
+            supporting healthier meals for homes, restaurants, and bulk buyers.
+          </p>
+
+          <div class="space-y-6 text-gray-700 text-sm sm:text-base leading-relaxed">
+
+            <!-- EMAIL -->
+            <div>
+              <strong class="block text-[#00945A] mb-1">Customer Support Email</strong>
+              <a
+                href="mailto:keeraiworld@gmail.com"
+                class="text-[#00945A]/70 hover:text-black/50/50 transition font-medium block"
+              >
+                keeraiworld@gmail.com
+              </a>
+            </div>
+
+            <!-- PHONE -->
+            <div>
+              <strong class="block text-[#00945A] mb-1">Customer Care & WhatsApp</strong>
+              <a
+                href="tel:+919789418978"
+                class="text-[#00945A]/70 hover:text-black/50 transition font-medium block"
+              >
+                +91 97894 18978
+              </a>
+            </div>
+
+            <!-- LOCATION -->
+            <div>
+              <strong class="block text-[#00945A] mb-2">
+                Farm Operations & Office Location
+              </strong>
+              <p class="text-[#00945A]/70">
+                Keerai World<br />
+                Erode, Tamil Nadu – 638116
+              </p>
+            </div>
+
+            <p class="text-[#00945A]/90 text-xs sm:text-sm pt-2">
+              Supplying fresh keerai and natural superfoods across Tamil Nadu
+              with quality you can trust.
+            </p>
+
+          </div>
+        </div>
+
+        <!-- FORM -->
+        <div
+          class="bg-white/10 backdrop-blur-xl border border-[#00945A]/70 shadow-2xl
+          rounded-3xl p-10 transition-all duration-500"
+        >
+          <h3 class="text-2xl font-semibold mb-8 text-[#00945A] text-center">
+            Connect with Keerai World
+          </h3>
+
+          <form id="contactForm" class="space-y-6">
+
+            <div class="grid grid-cols-2 gap-4">
+              <input
+                type="text"
+                id="firstName"
+                placeholder="First Name"
+                class="border rounded-xl px-4 py-3 w-full bg-white/50 text-[#00945A] 
+                        border-[#00945A]/70 focus:ring-1 focus:ring-[#00945A]/70 outline-none"
+                required
+              />
+
+              <input
+                type="text"
+                id="lastName"
+                placeholder="Last Name"
+                class="border rounded-xl px-4 py-3 w-full bg-white/50 text-[#00945A] 
+                        border-[#00945A]/70 focus:ring-1 focus:ring-[#00945A]/70 outline-none"
+                required
+              />
+            </div>
+
+            <input
+              type="number"
+              id="whatsappNumber"
+              placeholder="Mobile / WhatsApp Number"
+              class="border rounded-xl px-4 py-3 w-full bg-white/50 text-[#00945A] 
+                        border-[#00945A]/70 focus:ring-1 focus:ring-[#00945A]/70 outline-none"
+              required
+            />
+
+            <div>
+              <label class="block text-sm font-semibold text-[#00945A]/70 mb-2">
+                Preferred Delivery / Discussion Date
+              </label>
+
+              <div class="relative">
+                <input
+                  type="date"
+                  id="bookingDate"
+                  class="border rounded-xl px-4 py-3 w-full bg-white/50 text-[#00945A] 
+                        border-[#00945A]/70 focus:ring-1 focus:ring-[#00945A]/70 outline-none"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-[#00945A]/70 mb-2">
+                Inquiry Type
+              </label>
+
+              <select
+                id="photographyType"
+                class="border rounded-xl px-4 py-3 w-full bg-white/50 text-[#00945A] 
+                        border-[#00945A]/70 focus:ring-1 focus:ring-[#00945A]/70 outline-none"
+                required
+              >
+                <option  value="" disabled selected class="text-gray-800">Select an inquiry</option>
+                <option class="text-gray-800">Product Availability & Pricing</option>
+                <option class="text-gray-800">Wholesale & Bulk Supply</option>
+                <option class="text-gray-800">Retail / Hotel Partnership</option>
+                <option class="text-gray-800">Subscription or Regular Supply</option>
+                <option class="text-gray-800">Moringa & Keerai Product Information</option>
+                <option class="text-gray-800">Customer Support & Feedback</option>
+                <option class="text-gray-800">Other Inquiry</option>
+              </select>
+            </div>
+
+            <textarea
+              id="message"
+              placeholder="Please share your product interest, quantity requirements, or any questions."
+              rows="4"
+              class="border rounded-xl px-4 py-3 w-full bg-white/50 text-[#00945A] 
+                        border-[#00945A]/70 focus:ring-1 focus:ring-[#00945A]/70 outline-none"
+              required
+            ></textarea>
+
+        
+            
+        <div class="w-auto flex justify-center mx-auto">
+  <button type="submit" class="animated-button">
+    <svg xmlns="http://www.w3.org/2000/svg" class="arr-2" viewBox="0 0 24 24">
+      <path
+        d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"
+      ></path>
+    </svg>
+
+    <span class="text">Keerai World via WhatsApp</span>
+    <span class="circle"></span>
+
+    <svg xmlns="http://www.w3.org/2000/svg" class="arr-1" viewBox="0 0 24 24">
+      <path
+        d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"
+      ></path>
+    </svg>
+  </button>
+</div>
+
+
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOAST -->
+    <div id="toast"></div>
+
+    <!-- SCRIPT -->
+    <script>
+      const toast = document.getElementById("toast");
+
+      function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 3000);
+      }
+
+      document.getElementById("contactForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const firstName = document.getElementById("firstName").value.trim();
+        const lastName = document.getElementById("lastName").value.trim();
+        const whatsappNumber = document.getElementById("whatsappNumber").value.trim();
+        const bookingDate = document.getElementById("bookingDate").value.trim();
+        const serviceType = document.getElementById("photographyType").value.trim();
+        const message = document.getElementById("message").value.trim();
+
+        const fullMessage = `Hello Keerai World Team,
+
+My name is ${firstName} ${lastName}.
+Mobile Number: ${whatsappNumber}
+
+Inquiry Type: ${serviceType}
+Preferred Date: ${bookingDate}
+
+Message:
+${message}
+`;
+
+        const yourNumber = "919789418978";
+
+        showToast("Connecting to WhatsApp...");
+
+        setTimeout(() => {
+          window.open(
+            `https://wa.me/${yourNumber}?text=${encodeURIComponent(fullMessage)}`,
+            "_blank"
+          );
+
+          setTimeout(() => {
+            showToast("Your message has been sent!");
+            document.getElementById("contactForm").reset();
+          }, 1500);
+        }, 1000);
+      });
+
+      const bookingInput = document.getElementById("bookingDate");
+      const today = new Date();
+      today.setDate(today.getDate() + 1);
+
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, "0");
+      const dd = String(today.getDate()).padStart(2, "0");
+
+      bookingInput.min = `${yyyy}-${mm}-${dd}`;
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,12 @@
+---
+import LoginPage from '@/Form/LoginPage';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout>
+	<Header />
+<LoginPage client:load/>
+	<Footer />
+</Layout>

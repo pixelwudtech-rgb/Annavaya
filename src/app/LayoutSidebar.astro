@@ -1,0 +1,25 @@
+---
+import FooterSidebar from './FooterSidebar.astro';
+import NavBarSidebar from './NavBarSidebar.astro';
+import SideBar from './SideBar.astro';
+import FlowbiteLoader from '@/components/FlowbiteLoader.astro';
+import "../styles/global.css";
+---
+
+<div class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+  <NavBarSidebar />
+  <SideBar />
+
+  <div class="flex pt-16 overflow-hidden">
+    <div
+      id="main-content"
+      class="relative w-full h-full overflow-y-auto lg:ml-64 min-h-screen"
+    >
+      <slot />
+      <FooterSidebar />
+    </div>
+  </div>
+</div>
+
+<!-- ✅ THIS is the magic -->
+<FlowbiteLoader client:load />

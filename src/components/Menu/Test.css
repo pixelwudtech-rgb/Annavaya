@@ -1,0 +1,81 @@
+/* ================= HERO BACKGROUND ================= */
+
+.hero-background {
+  will-change: transform;
+
+  /* Soft organic framing */
+  background:
+    linear-gradient(
+      to bottom,
+      #f3f6f4 120px,
+      transparent 120px,
+      transparent calc(85vh - 60px),
+      #f3f6f4 calc(85vh - 60px)
+    ),
+    linear-gradient(
+      to right,
+      #f3f6f4 32px,
+      transparent 32px,
+      transparent calc(100% - 32px),
+      #f3f6f4 calc(100% - 32px)
+    );
+}
+
+/* ================= MASK WINDOW ================= */
+
+.window-mask {
+  position: relative;
+  overflow: hidden;
+
+  /* Mask logic (unchanged – very good) */
+  mask-image:
+    linear-gradient(black, black),
+    url("/window.svg");
+  mask-repeat: no-repeat;
+  mask-size: auto, 280px auto;
+  mask-position: center center, center right 3rem;
+  mask-composite: exclude;
+
+  /* Natural premium shadow */
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.12),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+
+  background-color: #ffffff;
+  border-radius: 2.5rem;
+}
+
+/* ================= RESPONSIVE REFINEMENT ================= */
+
+@media (max-width: 768px) {
+  .hero-background {
+    background:
+      linear-gradient(
+        to bottom,
+        #f3f6f4 80px,
+        transparent 80px,
+        transparent calc(85vh - 40px),
+        #f3f6f4 calc(85vh - 40px)
+      ),
+      linear-gradient(
+        to right,
+        #f3f6f4 16px,
+        transparent 16px,
+        transparent calc(100% - 16px),
+        #f3f6f4 calc(100% - 16px)
+      );
+  }
+
+  .window-mask {
+    mask-size: auto, 150px auto;
+    mask-position: center center, center bottom 1.25rem;
+    border-radius: 2rem;
+  }
+}
+
+/* ================= SMOOTH RENDERING ================= */
+
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}

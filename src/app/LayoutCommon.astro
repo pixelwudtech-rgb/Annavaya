@@ -1,0 +1,53 @@
+---
+import pkg from '../../package.json' assert { type: 'json' };
+import { url } from '@/lib/data';
+import "../styles/global.css";
+
+import LandingReadme from '@/modules/LandingReadme.astro';
+import { SITE_TITLE } from '@/app/constants';
+import LayoutSidebar from '@/app/LayoutSidebar.astro';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{SITE_TITLE} — v{pkg.version}</title>
+
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={pkg.description} />
+
+    <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
+    <link rel="sitemap" type="application/xml" href={url('sitemap-index.xml')} />
+
+    <script is:inline>
+      if (
+        localStorage.getItem('color-theme') === 'dark' ||
+        (!('color-theme' in localStorage) &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches)
+      ) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
+  </head>
+
+  <body>
+    <LayoutSidebar>
+      <LandingReadme />
+    </LayoutSidebar>
+
+    <script type="module">
+      import 'flowbite';
+      // import 'flowbite/dist/datepicker.js';
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  @import url('https://fonts.cdnfonts.com/css/inter');
+
+</style>
