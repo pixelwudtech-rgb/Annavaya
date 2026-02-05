@@ -1,16 +1,14 @@
 import { defineConfig } from "astro/config";
-import node from "@astrojs/node";
+import vercel from "@astrojs/vercel/serverless";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
 
 export default defineConfig({
-  // 🔴 IMPORTANT: static ❌ → server ✅
+  // ✅ Required for Vercel
   output: "server",
 
-  // ✅ Required for Hostinger VPS / Cloud
-  adapter: node({
-    mode: "standalone",
-  }),
+  // ✅ Vercel adapter
+  adapter: vercel(),
 
   integrations: [
     react(),
