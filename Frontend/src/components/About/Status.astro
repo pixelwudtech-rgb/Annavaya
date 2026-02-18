@@ -1,0 +1,85 @@
+---
+import CountUp from '../CountUp'
+
+const stats = [
+  { value: "2", suffix: "+", label: "Years of Snack Crafting Experience" },
+  { value: "10", suffix: "+", label: "Dedicated Team Members" },
+  { value: "85", suffix: "%", label: "Customer Engagement Growth" },
+  { value: "50", suffix: "+", label: "Retail & Business Partners" }
+];
+---
+
+<section class="bg-gray-200 py-16 border-t border-white/10">
+  <div class="container mx-auto px-6">
+    <div class="flex flex-col lg:flex-row items-center justify-between gap-12">
+
+      <!-- Stats Section -->
+      <div class="flex flex-col md:flex-row gap-12 lg:gap-16 items-center">
+        {stats.map((stat, index) => (
+          <div class="flex items-center gap-8" key={index}>
+            
+            <!-- Stat Content -->
+            <div class="text-center md:text-left">
+              <div class="flex items-baseline gap-1 justify-center md:justify-start mb-2">
+                <span class="text-5xl md:text-6xl font-bold text-black tracking-tight">
+                  <CountUp
+                    client:load
+                    from={0}
+                    to={stat.value}
+                    separator=","
+                    direction="up"
+                    duration={1}
+                    className="count-up-text"
+                    onStart={() => {}}
+                    onEnd={() => {}}
+                  />
+                </span>
+                <span class="text-3xl md:text-4xl font-medium text-black/80">
+                  {stat.suffix}
+                </span>
+              </div>
+              <p class="text-black/60 text-sm md:text-base">
+                {stat.label}
+              </p>
+            </div>
+
+            <!-- Vertical Divider -->
+            {index < stats.length - 1 && (
+              <div class="hidden md:block w-px h-20 bg-black/10 mx-4"></div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <!-- Description + Button -->
+      <div class="max-w-md text-center lg:text-left">
+        <p class="text-black/70 text-sm md:text-base mb-5 leading-relaxed">
+          At Keerai World, we focus on creating snacks that balance taste, quality,
+          and consistency. Our products are crafted using carefully selected
+          ingredients and refined processes, making us a trusted choice for
+          customers, retailers, and business partners seeking reliable,
+          everyday snack solutions.
+        </p>
+
+        <a
+          href="/Contact"
+          class="animated-button bg-black"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="arr-2" viewBox="0 0 24 24">
+            <path
+              d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"
+            ></path>
+          </svg>
+          <span class="text">Get in Touch</span>
+          <span class="circle"></span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="arr-1" viewBox="0 0 24 24">
+            <path
+              d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"
+            ></path>
+          </svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>

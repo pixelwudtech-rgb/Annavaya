@@ -1,0 +1,48 @@
+---
+import Company from "./Company";
+import CompanyLogo from "./CompanyLogo";
+
+---
+
+<section class="py-4 ">
+  <!-- Panel Brands -->
+  <h4 class="text-center text-white font-semibold fonttopic  tracking-wide px-2 mb-5">
+    Panel Brands  We Use
+  </h4>
+  <p class="text-center text-gray-300 fontpara tracking-wide  px-2 mb-6">
+    We carefully select trusted and reliable solar panel brands to ensure long-lasting performance,<br>
+    high efficiency, and maximum energy savings.
+  </p>
+
+  <Company client:load/>
+
+ 
+</section>
+
+<section class="py-4 ">
+  <!-- Inverter Brands -->
+  <h4 class="text-center text-white font-semibold  fonttopic tracking-wide mb-5">
+    Inverter Brands We Use
+  </h4>
+  <p class="text-center text-gray-300 fontpara tracking-wide mb-6">
+    Our solar solutions integrate inverters from industry-leading brands, chosen for their proven<br>
+    reliability, advanced technology, and high conversion efficiency. 
+  </p>
+ <CompanyLogo client:load/>
+
+  
+</section>
+
+<style>
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+.animate-scroll {
+  animation: scroll 40s linear infinite;
+}
+</style>

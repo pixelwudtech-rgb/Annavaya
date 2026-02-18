@@ -1,0 +1,79 @@
+---
+import "../styles/global.css";
+import SmoothCursor from "../components/ReactProject/SmoothCursor";
+import { Mouse } from "lucide-react";
+import MouseCursor from "@/components/ReactProject/MouseCursor";
+import ScrollProgress from "@/components/ReactProject/ScrollProgress";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/Logo Color.png" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Keerai World</title>
+
+    <!-- Google Fonts Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BBH+Hegarty&display=swap" rel="stylesheet">
+
+    <!-- Lexend (clean & readable – default body font) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Google Fonts Preconnect -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+<!-- Delius – clean, expressive, readable -->
+<link
+  href="https://fonts.googleapis.com/css2?family=Delius&display=swap"
+  rel="stylesheet"
+/>
+
+    <!-- Kaushan Script (artistic / decorative) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <!-- Optional Smooth Cursor -->
+    <ScrollProgress baseVelocity={-4} scrollDependent client:only="react" />
+    <!-- Page Content -->
+    <slot />
+  </body>
+</html>
+
+<style>
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+
+    background-color: #EBE2D5;
+
+     /* ✅ New default font */
+    font-family: "Delius", system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", Roboto, sans-serif;
+
+    font-weight: 400;
+    line-height: 1.65;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+
+  
+}
+</style>
+ 

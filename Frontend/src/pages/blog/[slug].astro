@@ -1,0 +1,128 @@
+---
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import Layout from '@/layouts/Layout.astro';
+import { posts } from '@/data/post';
+
+/* ---------------------------------
+   STATIC ROUTES (REQUIRED)
+---------------------------------- */
+export function getStaticPaths() {
+  return posts.map((post) => ({
+    params: { slug: post.id },
+  }));
+}
+
+/* ---------------------------------
+   CURRENT SLUG
+---------------------------------- */
+const { slug } = Astro.params;
+
+/* ---------------------------------
+   FIND CURRENT POST
+---------------------------------- */
+const post = posts.find((p) => p.id === slug);
+
+if (!post) {
+  return Astro.redirect('/404');
+}
+
+/* ---------------------------------
+   RELATED POSTS
+---------------------------------- */
+const relatedPosts = posts
+  .filter(
+    (p) => p.category === post.category && p.id !== post.id
+  )
+  .slice(0, 3);
+---
+<Layout title={post.title} description={post.excerpt || post.title}>
+  <Header />
+
+  <main class="text-white pt-32 pb-28">
+
+    <!-- ARTICLE -->
+    <article class="max-w-5xl mx-auto px-6">
+
+      <!-- META -->
+      <div class="flex items-center gap-3 text-sm text-gray-400 mb-6">
+        <span class="px-3 py-1 rounded-full bg-white/90 text-gray-900">
+          {post.category}
+        </span>
+        <span>•</span>
+        <span class="text-gray-300">{post.date}</span>
+      </div>
+
+      <!-- TITLE -->
+      <h1 class="text-4xl md:text-5xl font-semibold leading-tight tracking-tight mb-10">
+        {post.title}
+      </h1>
+
+      <!-- HERO IMAGE -->
+      <div class="relative mb-16">
+        <img
+          src={post.image}
+          alt={post.title}
+          class="w-full h-[420px] md:h-[520px] object-cover rounded-3xl"
+        />
+        <div class="absolute inset-0 rounded-3xl ring-1 ring-white/10"></div>
+      </div>
+
+      <!-- CONTENT -->
+      <div class="prose prose-lg prose-invert max-w-none">
+        <div class=" pl-6">
+          <Fragment set:html={post.content} />
+        </div>
+      </div>
+
+      <!-- AUTHOR -->
+      <div class="mt-20 pt-10 ">
+        <p class="text-sm text-gray-900">Written by</p>
+        <p class="font-medium">{post.author}</p>
+        <p class="text-sm text-gray-200">{post.authorRole}</p>
+      </div>
+
+    </article>
+
+    <!-- RELATED POSTS -->
+    {relatedPosts.length > 0 && (
+      <section class="max-w-6xl mx-auto px-6 mt-28">
+        <h2 class="text-2xl font-semibold mb-10">
+          Related Insights
+        </h2>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {relatedPosts.map((item) => (
+            <a
+              href={`/blog/${item.id}`}
+              class="group block border border-white/10 rounded-3xl overflow-hidden hover:border-white/30 transition"
+            >
+              <img
+                src={item.image}
+                alt={item.title}
+                class="h-44 w-full  object-cover group-hover:scale-105 transition"
+              />
+
+              <div class="p-6">
+                <p class="text-xs text-gray-900 mb-2">
+                  {item.category}
+                </p>
+
+                <h3 class="font-medium leading-snug group-hover:text-gray-300 transition">
+                  {item.title}
+                </h3>
+
+                <p class="text-xs text-gray-200 mt-3">
+                  {item.date}
+                </p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+  </main>
+
+  <Footer />
+</Layout>

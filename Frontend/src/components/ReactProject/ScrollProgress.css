@@ -1,0 +1,67 @@
+/* =====================
+   TOP PROGRESS BAR
+===================== */
+.progress-bar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  width: 100%;
+  background: #eee;
+  z-index: 9999;
+}
+
+.progress-bar {
+  height: 100%;
+  background: #00945A;
+  transition: width 0.15s linear;
+}
+
+/* =====================
+   PROGRESS CIRCLE
+===================== */
+.progress-circle-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 72px;
+  height: 72px;
+  z-index: 9999;
+}
+
+.progress-circle {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  
+}
+
+.progress-background {
+  fill: none;
+  stroke: #ededed;
+  stroke-width: 5;
+}
+
+.progress-circle-bar {
+  fill: none;
+  stroke: #000;
+  stroke-width: 5;
+  transition: stroke-dashoffset 0.15s linear;
+  
+}
+
+/* =====================
+   SCROLL TO TOP
+===================== */
+.scroll-to-top {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: none;
+  background: white;
+
+  color: #00945A;
+  font-size: 22px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}

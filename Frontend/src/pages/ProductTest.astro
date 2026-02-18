@@ -1,0 +1,28 @@
+---
+import TestCode from '@/components/ReactProject/TestCode';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import Layout from '../layouts/Layout.astro';
+import Cate from '@/components/HomePage/Cate.astro';
+import ImageTest from '@/components/Menu/ImageTest';
+import Circular from '@/components/Circular';
+import Whatapps from '@/components/ReactProject/Whatapps';
+import ProductDetail from '@/components/Product/ProductDetail';
+import Product from '@/components/HomePage/Product';
+
+
+
+// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
+// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+---
+
+<Layout>
+	<Header />
+	<Whatapps client:load/>
+	<Circular client:load/>
+     <ProductDetail client:load/>
+	 	<Product client:load />
+	 <Cate />
+
+	<Footer />
+</Layout>
