@@ -7,6 +7,12 @@ import type { Endpoint, EndpointsToOperations } from '../../types/entities.js';
 export async function fetchData<Selected extends Endpoint>(
   endpoint: Selected
 ) {
+  // Skip fetch if API_URL is not configured (e.g., during static build)
+  if (!API_URL) {
+    console.warn(`API_URL not configured, returning empty data for ${endpoint}`);
+    return [];
+  }
+
   const apiEndpoint = `${API_URL}${endpoint}`;
 
   console.info(`Fetching ${apiEndpoint}…`);
@@ -34,7 +40,9 @@ export async function fetchData<Selected extends Endpoint>(
 
 // NOTE: These helpers are useful for unifying paths, app-wide
 export function url(path = '') {
-	return `${import.meta.env.SITE}${import.meta.env.BASE_URL}${path}`;
+	// Use PUBLIC_API_BASE_URL if available, otherwise use a relative path
+	const baseUrl = import.meta.env.PUBLIC_API_BASE_URL || '';
+	return path ? `${baseUrl}${path}` : baseUrl;
 }
 
 // TODO: Remove old local assets from git history (to make cloning snappier).
