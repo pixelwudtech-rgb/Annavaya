@@ -7,6 +7,29 @@ export default function Navbar() {
   const lastScrollY = useRef(0);
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const [userName, setUserName] = useState("");
+const handleLogout = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("role");
+  localStorage.removeItem("name");
+  window.location.href = "/";
+};
+
+
+useEffect(() => {
+  const token = localStorage.getItem("token");
+  const name = localStorage.getItem("name"); // optional
+
+  if (token) {
+    setIsLoggedIn(true);
+    setUserName(name || "");
+  } else {
+    setIsLoggedIn(false);
+  }
+}, []);
+
+
 
   /* ===============================
      SCROLL HIDE / REVEAL
@@ -62,7 +85,7 @@ export default function Navbar() {
 
             {/* LOGO */}
             <a href="/" className="flex items-center">
-              <img src="/Logo Color.png" alt="Keerai World" className="h-22 sm:h-24" />
+              <img src="/Logo Color.png" alt="Keerai World" className="h-16 sm:h-24" />
             </a>
 
             {/* DESKTOP NAV */}
@@ -105,67 +128,197 @@ export default function Navbar() {
 
 
             {/* ICONS + CTA (DESKTOP ONLY) */}
-            <div className="hidden lg:flex items-center gap-4">
-                <a
-                href="/Favorites"
-                className="w-14 h-14 rounded-full flex items-center justify-center bg-white"
-              >
-                <img src="/Home/grocery.gif" className="w-7 h-7" />
-              </a>
+           <div className="hidden lg:flex items-center gap-4">
 
-              <a
-                href="/Favorites"
-                className="w-13 h-13 rounded-full flex items-center justify-center bg-white"
-              >
-                <img src="/icon/like.gif" className="w-7 h-7" />
-              </a>
+  {/* CART */}
+  <a
+    href="/Cart"
+    className="
+      w-14 h-14 rounded-full
+      flex items-center justify-center
+      bg-white
+      shadow-[0_10px_30px_rgba(0,0,0,0.15)]
+     
+      hover:-translate-y-0.5
+      transition-all duration-300
+    "
+  >
+    <svg
+  xmlns="http://www.w3.org/2000/svg"
+  className="w-6 h-6 text-gray-900"
+  fill="none"
+  viewBox="0 0 24 24"
+  stroke="currentColor"
+  strokeWidth={1.4}
+>
+  <path
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    d="M2.5 3h2.2l.45 2.2m1.2 7.6h9.8l3.8-7.4H5.15M8 18a1.25 1.25 0 102.5 0A1.25 1.25 0 008 18zm7 0a1.25 1.25 0 102.5 0A1.25 1.25 0 0015 18z"
+  />
+</svg>
+  </a>
 
-              <div className="relative group">
-                <a className="w-13 h-13 rounded-full flex items-center justify-center bg-white">
-                  <img src="/icon/add-user.gif" className="w-9 h-9" />
-                </a>
+  {/* WISHLIST */}
+  <a
+    href="/Favorites"
+    className="
+      w-14 h-14 rounded-full
+      flex items-center justify-center
+      bg-white
+      shadow-md
+      hover:shadow-lg
+      hover:-translate-y-0.5
+      transition-all duration-300
+    "
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-6 h-6 text-gray-800"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={1.6}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 20.364 4.318 12.682a4.5 4.5 0 010-6.364z"
+      />
+    </svg>
+  </a>
 
-                <div className="absolute right-0 mt-3 w-44 rounded-xl bg-white shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                  {[
-                    { label: "My Account", href: "/Account" },
-                    { label: "Orders", href: "/Orders" },
-                    { label: "Wishlist", href: "/Favorites" },
-                    { label: "Logout", href: "/Logout" },
-                  ].map((item) => (
-                    <a
-                      key={item.href}
-                      href={item.href}
-                      className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 rounded-xl"
-                    >
-                      {item.label}
-                    </a>
-                  ))}
-                </div>
-              </div>
-             {/* CTA BUTTONS */}
-<a href="/LogIn" className="animated-button h-12">
-  <svg className="arr-2" viewBox="0 0 24 24">
-    <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
-  </svg>
-  <span className="text">LOG IN</span>
-  <span className="circle"></span>
-  <svg className="arr-1" viewBox="0 0 24 24">
-    <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
-  </svg>
-</a>
+  {/* USER MENU */}
+  <div className="relative group">
+    <div
+      className="
+        w-14 h-14 rounded-full
+        flex items-center justify-center
+        bg-white
+        shadow-md
+        hover:shadow-lg
+        hover:-translate-y-0.5
+        transition-all duration-300
+        cursor-pointer
+      "
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-7 h-7 text-gray-800"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={1.6}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z"
+        />
+      </svg>
+    </div>
 
-<a href="/SignUp" className="animated-button h-12">
-  <svg className="arr-2" viewBox="0 0 24 24">
-    <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
-  </svg>
-  <span className="text">SIGN UP</span>
-  <span className="circle"></span>
-  <svg className="arr-1" viewBox="0 0 24 24">
-    <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
-  </svg>
-</a>
+    {/* DROPDOWN */}
+    <div
+      className="
+        absolute right-0 mt-3 w-48
+        rounded-2xl bg-white
+        shadow-[0_20px_40px_rgba(0,0,0,0.12)]
+        opacity-0 invisible
+        translate-y-2
+        group-hover:opacity-100
+        group-hover:visible
+        group-hover:translate-y-0
+        transition-all duration-300
+      "
+    >
+      {[
+        { label: "My Account", href: "/Account" },
+        { label: "Orders", href: "/Orders" },
+        { label: "Wishlist", href: "/Favorites" },
+       
+      ].map((item) => (
+        <a
+          key={item.href}
+          href={item.href}
+          className="
+            block px-5 py-3 text-sm
+            text-gray-700
+            hover:bg-gray-100
+            rounded-xl
+          "
+        >
+          {item.label}
+        </a>
+      ))}
+    </div>
+  </div>
 
-            </div>
+  {/* LOGIN CTA */}
+  {/* USER / LOGIN */}
+{!isLoggedIn ? (
+  /* LOGIN BUTTON */
+  <a href="/LogIn" className="animated-button h-12">
+    <svg className="arr-2" viewBox="0 0 24 24">
+      <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
+    </svg>
+    <span className="text">LOG IN</span>
+    <span className="circle"></span>
+    <svg className="arr-1" viewBox="0 0 24 24">
+      <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
+    </svg>
+  </a>
+) : (
+  /* USER AVATAR + DROPDOWN */
+  <div className="relative group">
+    <div
+      className="
+        w-14 h-14 rounded-full
+        flex items-center justify-center
+        bg-white
+        shadow-md
+        hover:shadow-lg
+        hover:-translate-y-0.5
+        transition-all duration-300
+        cursor-pointer
+      "
+    >
+      <span className="text-gray-900 font-semibold">
+        {userName ? userName.charAt(0).toUpperCase() : "U"}
+      </span>
+    </div>
+
+    {/* DROPDOWN */}
+    <div
+      className="
+        absolute right-0 mt-3 w-48
+        rounded-2xl bg-white
+        shadow-[0_20px_40px_rgba(0,0,0,0.12)]
+        opacity-0 invisible
+        translate-y-2
+        group-hover:opacity-100
+        group-hover:visible
+        group-hover:translate-y-0
+        transition-all duration-300
+      "
+    >
+      <a
+        href="/Account"
+        className="block px-5 py-3 text-sm text-gray-700 hover:bg-gray-100 rounded-xl"
+      >
+        My Account
+      </a>
+
+      <button
+        onClick={handleLogout}
+        className="w-full text-left px-5 py-3 text-sm text-gray-600 hover:bg-gray-100 rounded-xl"
+      >
+        Logout
+      </button>
+    </div>
+  </div>
+)}
+</div>
 
             {/* MOBILE HAMBURGER */}
             <button
@@ -271,7 +424,7 @@ export default function Navbar() {
 </div>
 
           <div className=" md:block  mt-8 space-y-6 flex flex-col">
-           {["LOG IN", "SIGN UP"].map((text) => (
+           {["LOG IN"].map((text) => (
               <a key={text} href="/Contact" className="animated-button h-12">
                 <svg className="arr-2" viewBox="0 0 24 24">
                   <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />

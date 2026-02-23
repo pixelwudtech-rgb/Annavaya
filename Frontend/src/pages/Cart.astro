@@ -1,0 +1,15 @@
+---
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+import CartPage from "@/components/Product/CartPage";
+import Layout from "@/layouts/Layout.astro";
+
+
+
+---
+<Layout>
+	<Header />
+<CartPage client:load/>
+<Footer />
+</Layout>
+

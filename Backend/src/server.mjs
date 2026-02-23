@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 
-dotenv.config({ path: "./.env" });
+dotenv.config();
 
 // Neon DB
 import { pool } from "./db.js";
@@ -11,11 +11,12 @@ import { pool } from "./db.js";
 import { register } from "./routes/register.js";
 import { login } from "./routes/login.js";
 import { getProducts } from "./routes/products.js";
-import { addToCart, getCart } from "./routes/cart.js";
+import accountRoutes from "./routes/account.js";
+import adminRoutes from "./routes/admin.js";
+import cartRoutes from "./routes/cartRoutes.js";
+import addProductRoutes from "./routes/addproducts.js";
 
 const app = express();
-
-// Backend runs on 3000
 const PORT = process.env.PORT || 3000;
 
 /* =========================
@@ -40,13 +41,26 @@ app.post("/api/login", login);
 /* =========================
    PRODUCTS ROUTE
 ========================= */
-app.get("/api/products", getProducts);
+// app.get("/api/products", getProducts);
+
+
+app.use("/api/products", addProductRoutes);
+/* =========================
+   CART ROUTES (✅ SINGLE SOURCE)
+========================= */
+app.use("/api", cartRoutes);
 
 /* =========================
-   CART ROUTES ✅ FIX
+   ACCOUNT ROUTES
 ========================= */
-app.post("/api/cart", addToCart);
-app.get("/api/cart", getCart);
+app.use("/api", accountRoutes);
+
+/* =========================
+   ADMIN ROUTES (🔐 PROTECTED)
+========================= */
+app.use("/api/admin", adminRoutes);
+
+app.use("/api/products", addProductRoutes);
 
 /* =========================
    DB CONNECTION TEST

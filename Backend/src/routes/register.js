@@ -20,8 +20,8 @@ export async function register(req, res) {
 
     const hashedPassword = hashPassword(password);
 
-   await pool.query(
-  `INSERT INTO username (username, email, phone, password)
+  await pool.query(
+  `INSERT INTO users (username, email, phone, password)
    VALUES ($1, $2, $3, $4)`,
   [username, email, phone, hashedPassword]
 );

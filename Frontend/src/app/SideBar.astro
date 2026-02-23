@@ -203,12 +203,31 @@ import { url } from '../components/lib/data';
 									>Users</a
 								>
 							</li>
+							<li>
+								<!-- {{ if eq $page_slug "products" }} -->
+								<!-- bg-gray-100 dark:bg-gray-700 -->
+								<a
+									href='/Admin/crud/AddProducts'
+									class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700"
+									>Add Products</a
+								>
+							</li>
+
+							<li>
+								<!-- {{ if eq $page_slug "products" }} -->
+								<!-- bg-gray-100 dark:bg-gray-700 -->
+								<a
+									href='/Admin/crud/ListProduct'
+									class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700"
+									>List Products</a
+								>
+							</li>
 						</ul>
 					</li>
 					<li>
-						<!-- {{ if eq $page_slug "settings" }} -->
+						
 						<a
-							href={url('settings')}
+							href='/Admin/crud/AddProducts'
 							class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700"
 						>
 							<svg

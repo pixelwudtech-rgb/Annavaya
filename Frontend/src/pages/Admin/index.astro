@@ -1,10 +1,12 @@
 ---
 import LayoutSidebar from '@/app/LayoutSidebar.astro';
+import AdminGuard from '@/components/Account/AdminGuard';
 import LandingReadme from '@/modules/LandingReadme.astro';
-
 
 ---
 
-<LayoutSidebar>
-	<LandingReadme />
-</LayoutSidebar>
+<AdminGuard client:load>
+  <LayoutSidebar>
+    <LandingReadme />
+  </LayoutSidebar>
+</AdminGuard>

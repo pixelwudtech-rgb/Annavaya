@@ -1,8 +1,12 @@
 import crypto from "node:crypto";
 import { pool } from "../db.js";
+import { signToken } from "../utils/jwt.js";
 
 const KEY_LENGTH = 64;
 
+/* =========================
+   PASSWORD VERIFY
+========================= */
 function verifyPassword(password, stored) {
   if (!stored || !stored.includes(":")) return false;
 
@@ -18,44 +22,75 @@ function verifyPassword(password, stored) {
   );
 }
 
+/* =========================
+   LOGIN CONTROLLER
+========================= */
 export async function login(req, res) {
   try {
-    let { identifier, password, type } = req.body;
+    const { identifier, password, type } = req.body;
 
+    /* 🔒 VALIDATION */
     if (!identifier || !password || !type) {
-      return res.status(400).json({ error: "Missing credentials" });
+      return res.status(400).json({
+        error: "Missing login credentials"
+      });
     }
 
-    type = type.toLowerCase(); // ✅ normalize
+    const loginType = type.toLowerCase();
 
+    if (!["email", "phone"].includes(loginType)) {
+      return res.status(400).json({
+        error: "Invalid login type"
+      });
+    }
+
+    /* 🔍 FETCH USER */
     const query =
-      type === "email"
-        ? `SELECT * FROM username WHERE email = $1`
-        : `SELECT * FROM username WHERE phone = $1`;
+      loginType === "email"
+        ? "SELECT * FROM users WHERE email = $1"
+        : "SELECT * FROM users WHERE phone = $1";
 
     const { rows } = await pool.query(query, [identifier]);
     const user = rows[0];
 
     if (!user) {
-      return res.status(401).json({ error: "User not found" });
+      return res.status(401).json({
+        error: "User not found"
+      });
     }
 
-    if (!verifyPassword(password, user.password)) {
-      return res.status(401).json({ error: "Invalid password" });
+    /* 🔐 VERIFY PASSWORD */
+    const isValid = verifyPassword(password, user.password);
+
+    if (!isValid) {
+      return res.status(401).json({
+        error: "Invalid password"
+      });
     }
 
+    /* 🔑 CREATE JWT */
+    const token = signToken({
+      id: user.id,
+      role: user.role
+    });
+
+    /* ✅ SUCCESS RESPONSE */
     return res.status(200).json({
       success: true,
+      token,
       user: {
         id: user.id,
-        username: user.username, // ✅ correct
+        username: user.username,
         email: user.email,
-        phone: user.phone
+        phone: user.phone,
+        role: user.role
       }
     });
 
   } catch (err) {
-    console.error("LOGIN ERROR:", err);
-    return res.status(500).json({ error: "Internal server error" });
+    console.error("❌ LOGIN ERROR:", err);
+    return res.status(500).json({
+      error: "Internal server error"
+    });
   }
 }

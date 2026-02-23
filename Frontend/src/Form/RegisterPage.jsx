@@ -26,26 +26,16 @@ export default function Register() {
           : `${import.meta.env.PUBLIC_API_BASE}/api/register`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         }
       );
 
       const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data?.error || "Registration failed");
-      }
+      if (!res.ok) throw new Error(data?.error || "Registration failed");
 
       setSuccess(true);
-
-      // ✨ Premium delay before redirect
-      setTimeout(() => {
-        window.location.href = "/LogIn";
-      }, 1200);
-
+      setTimeout(() => (window.location.href = "/LogIn"), 1200);
     } catch (err) {
       setError(err.message || "Network error. Please try again.");
     } finally {
@@ -54,66 +44,76 @@ export default function Register() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="w-full max-w-md bg-white dark:bg-gray-900 rounded-2xl shadow-xl p-8">
+    <div className="min-h-screen flex items-center justify-center  px-4 md:mt-20 mt-10">
 
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
-            Create your account
+      {/* Card */}
+      <div className="w-full max-w-md rounded-2xl
+                      bg-white/80 dark:bg-neutral-900/80
+                      backdrop-blur-xl
+                      border border-neutral-200/60 dark:border-neutral-800
+                      shadow-[0_20px_50px_rgba(0,0,0,0.08)]
+                      p-8">
+
+        {/* Brand */}
+        <div className="text-center mb-10">
+          <p className="text-xs tracking-widest uppercase text-neutral-500">
+            Welcome
+          </p>
+          <h1 className="text-3xl font-semibold text-neutral-900 dark:text-white mt-2">
+            Create account
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-            Start managing everything in one place
+          <p className="text-sm text-neutral-500 mt-3">
+            One account. Everything managed.
           </p>
         </div>
 
         {/* Success */}
         {success && (
-          <div className="mb-4 rounded-lg bg-green-50 text-green-700 px-4 py-2 text-sm text-center">
-            Account created successfully 🎉 Redirecting…
+          <div className="mb-5 rounded-lg border border-green-200 bg-green-50
+                          text-green-700 px-4 py-2 text-sm text-center">
+            Account created successfully ✨
           </div>
         )}
 
         {/* Error */}
         {error && (
-          <div className="mb-4 rounded-lg bg-red-50 text-red-700 px-4 py-2 text-sm text-center">
+          <div className="mb-5 rounded-lg border border-red-200 bg-red-50
+                          text-red-700 px-4 py-2 text-sm text-center">
             {error}
           </div>
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-5">
-
-          <Input label="Username" name="username" placeholder="Your username" />
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <Input label="Userame" name="username" placeholder="Username" />
           <Input label="Email" name="email" type="email" placeholder="you@example.com" />
-          <Input label="Phone Number" name="phone" placeholder="+91 98765 43210" />
+          <Input label="Phone" name="phone" placeholder="+91 98765 43210" />
           <Input label="Password" name="password" type="password" placeholder="••••••••" />
 
           <button
             type="submit"
             disabled={loading || success}
-            className="w-full rounded-lg bg-black dark:bg-white
-                       text-white dark:text-black
-                       py-2.5 text-sm font-medium
-                       hover:opacity-90 transition
+            className="w-full rounded-xl
+                       bg-neutral-900 dark:bg-white
+                       text-white dark:text-neutral-900
+                       py-3 text-sm font-medium
+                       transition-all duration-200
+                       hover:opacity-90
+                       hover:shadow-lg
                        disabled:opacity-60"
           >
-            {loading
-              ? "Creating account…"
-              : success
-              ? "Success ✓"
-              : "Create account"}
+            {loading ? "Creating…" : success ? "Done ✓" : "Create account"}
           </button>
         </form>
 
         {/* Footer */}
-        <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
+        <p className="mt-8 text-center text-sm text-neutral-500">
           Already have an account?{" "}
           <a
-            href="/login"
-            className="text-black dark:text-white font-medium hover:underline"
+            href="/LogIn"
+            className="font-medium text-neutral-900 dark:text-white hover:underline"
           >
-            Login
+            Log in
           </a>
         </p>
       </div>
@@ -124,7 +124,8 @@ export default function Register() {
 function Input({ label, name, type = "text", placeholder }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+      <label className="block text-xs font-medium tracking-wide
+                        text-neutral-600 dark:text-neutral-400 mb-2">
         {label}
       </label>
       <input
@@ -132,10 +133,16 @@ function Input({ label, name, type = "text", placeholder }) {
         type={type}
         placeholder={placeholder}
         required
-        className="w-full rounded-lg border border-gray-300 dark:border-gray-600
-                   bg-white dark:bg-gray-700 px-4 py-2.5 text-sm
-                   text-gray-900 dark:text-white
-                   focus:ring-2 focus:ring-black dark:focus:ring-white focus:outline-none"
+        className="w-full rounded-xl
+                   border border-neutral-300 dark:border-neutral-700
+                   bg-white dark:bg-neutral-800
+                   px-4 py-3 text-sm
+                   text-neutral-900 dark:text-white
+                   placeholder-neutral-400
+                   focus:outline-none
+                   focus:ring-2 focus:ring-neutral-900/20
+                   dark:focus:ring-white/20
+                   transition"
       />
     </div>
   );

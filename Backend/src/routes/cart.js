@@ -4,8 +4,6 @@ import { pool } from "../db.js";
    ADD TO CART
 ========================= */
 export const addToCart = async (req, res) => {
-  console.log("🔥 ADD TO CART HIT", req.body);
-
   const { productId, quantity } = req.body;
   const qty = quantity && quantity > 0 ? quantity : 1;
 
@@ -24,7 +22,7 @@ export const addToCart = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Check if product already in cart
+    // Check if already in cart
     const existing = await pool.query(
       "SELECT id FROM cart WHERE product_id = $1",
       [productId]
@@ -61,7 +59,8 @@ export const getCart = async (req, res) => {
         p.id AS product_id,
         p.title,
         p.price,
-        p.image
+        p.image,
+        (p.price * c.quantity) AS total_price
       FROM cart c
       JOIN products p ON c.product_id = p.id
       ORDER BY c.created_at DESC
@@ -71,5 +70,61 @@ export const getCart = async (req, res) => {
   } catch (err) {
     console.error("❌ FETCH CART ERROR:", err);
     res.status(500).json({ message: "Fetch cart failed" });
+  }
+};
+
+/* =========================
+   UPDATE CART QUANTITY
+========================= */
+export const updateCartQuantity = async (req, res) => {
+  const { cartId } = req.params;
+  const { quantity } = req.body;
+
+  if (!cartId) {
+    return res.status(400).json({ message: "Cart ID required" });
+  }
+
+  try {
+    // If quantity becomes 0 or less → delete item
+    if (quantity <= 0) {
+      await pool.query(
+        "DELETE FROM cart WHERE id = $1",
+        [cartId]
+      );
+      return res.json({ message: "Item removed from cart" });
+    }
+
+    const result = await pool.query(
+      "UPDATE cart SET quantity = $1 WHERE id = $2 RETURNING *",
+      [quantity, cartId]
+    );
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("❌ UPDATE CART ERROR:", err);
+    res.status(500).json({ message: "Update cart failed" });
+  }
+};
+
+/* =========================
+   DELETE CART ITEM
+========================= */
+export const deleteCartItem = async (req, res) => {
+  const { cartId } = req.params;
+
+  if (!cartId) {
+    return res.status(400).json({ message: "Cart ID required" });
+  }
+
+  try {
+    await pool.query(
+      "DELETE FROM cart WHERE id = $1",
+      [cartId]
+    );
+
+    res.json({ message: "Item removed from cart" });
+  } catch (err) {
+    console.error("❌ DELETE CART ERROR:", err);
+    res.status(500).json({ message: "Delete cart failed" });
   }
 };

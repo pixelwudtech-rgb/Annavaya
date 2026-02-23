@@ -32,25 +32,26 @@ export default function Login() {
     try {
       const res = await fetch("http://localhost:3000/api/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          identifier,
-          password,
-          type
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ identifier, password, type })
       });
 
       const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || "Login failed");
 
-      if (!res.ok) {
-        throw new Error(data?.error || "Login failed");
-      }
+      // SAVE SESSION
+localStorage.setItem("token", data.token);
+localStorage.setItem("role", data.user.role);
+localStorage.setItem("name", data.user.username);
 
-      // ✅ SUCCESS
-      window.location.href = "/Admin/dashboard";
-
+// ROLE-BASED REDIRECT
+if (data.user.role === "admin") {
+  // 👑 ADMIN
+  window.location.href = "/Admin/dashboard";
+} else {
+  // 👤 NORMAL USER
+  window.location.href = "/"; // or "/Account" or "/Shop"
+}
     } catch (err) {
       setError(err.message || "Network error");
     } finally {
@@ -59,27 +60,45 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+    <div className="min-h-screen flex items-center justify-center
+                    px-4">
 
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-semibold">Welcome back</h1>
-          <p className="text-sm text-gray-500 mt-2">
-            Login using email or mobile number
+      {/* Card */}
+      <div className="w-full max-w-md rounded-2xl
+                      bg-white/80 dark:bg-neutral-900/80
+                      backdrop-blur-xl
+                      border border-neutral-200/60 dark:border-neutral-800
+                      shadow-[0_20px_50px_rgba(0,0,0,0.08)]
+                      p-8">
+
+        {/* Header */}
+        <div className="text-center mb-10">
+          <p className="text-xs tracking-widest uppercase text-neutral-500">
+            Welcome back
+          </p>
+          <h1 className="text-3xl font-semibold text-neutral-900 dark:text-white mt-2">
+            Sign in
+          </h1>
+          <p className="text-sm text-neutral-500 mt-3">
+            Access your Website securely
           </p>
         </div>
 
+        {/* Error */}
         {error && (
-          <div className="mb-4 text-sm text-red-600 bg-red-50 rounded-lg px-4 py-2 text-center">
+          <div className="mb-5 rounded-lg border border-red-200
+                          bg-red-50 text-red-700
+                          px-4 py-2 text-sm text-center">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-6">
           <Input
-            label="Email or Mobile Number"
+            label="Email or Mobile"
             name="identifier"
-            placeholder="Email address or 10-digit mobile"
+            placeholder="Email / mobile"
           />
 
           <Input
@@ -92,11 +111,29 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-black text-white py-2.5 text-sm font-medium disabled:opacity-60"
+            className="w-full rounded-xl
+                       bg-neutral-900 dark:bg-white
+                       text-white dark:text-neutral-900
+                       py-3 text-sm font-medium
+                       transition-all duration-200
+                       hover:opacity-90
+                       hover:shadow-lg
+                       disabled:opacity-60"
           >
-            {loading ? "Logging in…" : "Login"}
+            {loading ? "Signing in…" : "Sign in"}
           </button>
         </form>
+
+        {/* Footer */}
+        <p className="mt-8 text-center text-sm text-neutral-500">
+          Don’t have an account?{" "}
+          <a
+            href="/SignUp"
+            className="font-medium text-neutral-900 dark:text-white hover:underline"
+          >
+            Create one
+          </a>
+        </p>
       </div>
     </div>
   );
@@ -105,13 +142,25 @@ export default function Login() {
 function Input({ label, name, type = "text", placeholder }) {
   return (
     <div>
-      <label className="block text-sm font-medium mb-1">{label}</label>
+      <label className="block text-xs font-medium tracking-wide
+                        text-neutral-600 dark:text-neutral-400 mb-2">
+        {label}
+      </label>
       <input
         name={name}
         type={type}
         placeholder={placeholder}
         required
-        className="w-full rounded-lg border px-4 py-2.5 text-sm"
+        className="w-full rounded-xl
+                   border border-neutral-300 dark:border-neutral-700
+                   bg-white dark:bg-neutral-800
+                   px-4 py-3 text-sm
+                   text-neutral-900 dark:text-white
+                   placeholder-neutral-400
+                   focus:outline-none
+                   focus:ring-2 focus:ring-neutral-900/20
+                   dark:focus:ring-white/20
+                   transition"
       />
     </div>
   );

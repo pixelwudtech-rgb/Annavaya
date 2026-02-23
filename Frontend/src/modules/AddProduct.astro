@@ -1,0 +1,168 @@
+---
+/* Astro page – no framework */
+---
+
+<html lang="en">
+  <head>
+    <title>Add Product</title>
+  </head>
+
+  <body class="min-h-screen bg-neutral-950 text-neutral-100">
+    <div class="max-w-3xl mx-auto py-12 px-6">
+      <!-- Card -->
+      <div class="bg-neutral-900 border border-neutral-800 rounded-xl shadow-lg">
+        <!-- Header -->
+        <div class="px-8 py-6 border-b border-neutral-800">
+          <h1 class="text-2xl font-semibold">Add New Product</h1>
+          <p class="text-sm text-neutral-400 mt-1">
+            Add a product to your store
+          </p>
+        </div>
+
+        <!-- Form -->
+        <form id="addProductForm" class="p-8 space-y-6">
+          <!-- Tag -->
+          <div>
+            <label class="label">Product Tag</label>
+            <input name="tag" placeholder="Snack Box Combo" />
+          </div>
+
+          <!-- Title -->
+          <div>
+            <label class="label">Product Title</label>
+            <input
+              name="title"
+              placeholder="Gongura Idli Podi | Bundle"
+              required
+            />
+          </div>
+
+          <!-- Tagline -->
+          <div>
+            <label class="label">Tagline</label>
+            <textarea
+              name="tagline"
+              rows="3"
+              placeholder="Traditional gongura idli podi made with authentic spices..."
+            ></textarea>
+          </div>
+
+          <!-- Price / Rating / Reviews -->
+          <div class="grid grid-cols-3 gap-4">
+            <div>
+              <label class="label">Price (₹)</label>
+              <input name="price" placeholder="110" required />
+            </div>
+
+            <div>
+              <label class="label">Rating</label>
+              <input name="rating" placeholder="4.8" />
+            </div>
+
+            <div>
+              <label class="label">Reviews</label>
+              <input name="reviews" placeholder="67" />
+            </div>
+          </div>
+
+          <!-- Image -->
+          <div>
+            <label class="label">Image Path</label>
+            <input name="image" placeholder="/Home/Package.png" />
+          </div>
+
+          <!-- Link -->
+          <div>
+            <label class="label">Product Link</label>
+            <input name="link" placeholder="/ProductTest" />
+          </div>
+
+          <!-- Button -->
+          <div class="pt-4 flex justify-end">
+            <button
+              type="submit"
+              class="px-6 py-2 rounded-lg bg-white text-black text-sm font-medium hover:bg-neutral-200 transition"
+            >
+              Add Product
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Script -->
+    <script>
+  const form = document.getElementById("addProductForm");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+
+    const payload = {
+      tag: formData.get("tag") || null,
+      title: formData.get("title"),
+      tagline: formData.get("tagline") || null,
+      price: Number(formData.get("price")),
+      rating: formData.get("rating")
+        ? Number(formData.get("rating"))
+        : null,
+      reviews: formData.get("reviews")
+        ? Number(formData.get("reviews"))
+        : null,
+      image: formData.get("image") || null,
+      bg: "bg-white",
+      link: formData.get("link") || null,
+    };
+
+    try {
+      const res = await fetch("http://localhost:3000/api/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error();
+
+      alert("✅ Product added successfully");
+      form.reset();
+    } catch (err) {
+      alert("❌ Failed to add product");
+      console.error(err);
+    }
+  });
+</script>
+
+    <style>
+      .label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 0.25rem;
+        color: #d4d4d8;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        background: #0a0a0a;
+        border: 1px solid #262626;
+        border-radius: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+        color: white;
+      }
+
+      input::placeholder,
+      textarea::placeholder {
+        color: #52525b;
+      }
+
+      input:focus,
+      textarea:focus {
+        outline: none;
+        border-color: white;
+      }
+    </style>
+  </body>
+</html>
