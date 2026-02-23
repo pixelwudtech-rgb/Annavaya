@@ -10,57 +10,53 @@ export default function Login() {
     return null;
   }
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    if (loading) return;
+ async function handleSubmit(e) {
+  e.preventDefault();
+  if (loading) return;
 
-    setError("");
-    setLoading(true);
+  setError("");
+  setLoading(true);
 
-    const formData = new FormData(e.target);
-    const identifier = formData.get("identifier")?.trim();
-    const password = formData.get("password");
+  const formData = new FormData(e.target);
+  const identifier = formData.get("identifier")?.trim();
+  const password = formData.get("password");
 
-    const type = detectIdentifierType(identifier);
+  const type = detectIdentifierType(identifier);
 
-    if (!type) {
-      setError("Enter a valid email or 10-digit mobile number");
-      setLoading(false);
-      return;
-    }
+  if (!type) {
+    setError("Enter a valid email or 10-digit mobile number");
+    setLoading(false);
+    return;
+  }
 
-    try {
-  const res = await fetch(
-    `${import.meta.env.PUBLIC_API_BASE_URL}/api/login`,
-    {
+  try {
+    const res = await fetch("/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ identifier, password, type }),
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data?.error || "Login failed");
+
+    // SAVE SESSION
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("role", data.user.role);
+    localStorage.setItem("name", data.user.username);
+
+    // ROLE-BASED REDIRECT
+    if (data.user.role === "admin") {
+      window.location.href = "/Admin/dashboard";
+    } else {
+      window.location.href = "/";
     }
-  );
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.error || "Login failed");
-
-      // SAVE SESSION
-localStorage.setItem("token", data.token);
-localStorage.setItem("role", data.user.role);
-localStorage.setItem("name", data.user.username);
-
-// ROLE-BASED REDIRECT
-if (data.user.role === "admin") {
-  // 👑 ADMIN
-  window.location.href = "/Admin/dashboard";
-} else {
-  // 👤 NORMAL USER
-  window.location.href = "/"; // or "/Account" or "/Shop"
-}
-    } catch (err) {
-      setError(err.message || "Network error");
-    } finally {
-      setLoading(false);
-    }
+  } catch (err) {
+    setError(err.message || "Network error");
+  } finally {
+    setLoading(false);
   }
+}
 
   return (
     <div className="min-h-screen flex items-center justify-center
