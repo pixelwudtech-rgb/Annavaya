@@ -115,21 +115,24 @@
       link: formData.get("link") || null,
     };
 
-    try {
-      const res = await fetch("http://localhost:3000/api/products", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) throw new Error();
-
-      alert("✅ Product added successfully");
-      form.reset();
-    } catch (err) {
-      alert("❌ Failed to add product");
-      console.error(err);
+   try {
+  const res = await fetch(
+    `${import.meta.env.PUBLIC_API_BASE_URL}/api/products`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
     }
+  );
+
+  if (!res.ok) throw new Error();
+
+  alert("✅ Product added successfully");
+  form.reset();
+} catch (err) {
+  alert("❌ Failed to add product");
+  console.error(err);
+}
   });
 </script>
 

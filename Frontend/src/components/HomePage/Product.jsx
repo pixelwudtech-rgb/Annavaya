@@ -72,18 +72,43 @@ export default function SwiperSlider() {
      ADD TO CART
   ========================= */
   const addToCart = async (productId) => {
-    await fetch("http://localhost:3000/api/cart", {
+  try {
+    const API = import.meta.env.PUBLIC_API_BASE_URL;
+    const token = localStorage.getItem("token");
+
+    if (!API) {
+      console.warn("PUBLIC_API_BASE_URL is not defined");
+      return;
+    }
+
+    const res = await fetch(`${API}/api/cart`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
       body: JSON.stringify({
         productId,
-        quantity: qty[productId],
+        quantity: qty[productId] || 1,
       }),
     });
 
-    alert("Added to cart");
-  };
+    if (res.status === 401) {
+      alert("Please login to add items to cart");
+      window.location.href = "/LogIn";
+      return;
+    }
 
+    if (!res.ok) {
+      throw new Error(`Add to cart failed: ${res.status}`);
+    }
+
+    alert("Added to cart");
+  } catch (err) {
+    console.error("Add to cart failed:", err);
+    alert("Failed to add product to cart");
+  }
+};
   /* =========================
      RENDER
   ========================= */

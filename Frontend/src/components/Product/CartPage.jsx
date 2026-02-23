@@ -11,67 +11,136 @@ export default function CartPage() {
      FETCH CART
   ========================= */
   useEffect(() => {
-    fetch("http://localhost:3000/api/cart")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch cart");
-        return res.json();
-      })
-      .then(setCart)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
+  const fetchCart = async () => {
+    try {
+      const API = import.meta.env.PUBLIC_API_BASE_URL;
+      const token = localStorage.getItem("token");
+
+      if (!API) {
+        console.warn("PUBLIC_API_BASE_URL is not defined");
+        return;
+      }
+
+      const res = await fetch(`${API}/api/cart`, {
+        headers: {
+          ...(token && { Authorization: `Bearer ${token}` }),
+        },
+      });
+
+      // 🔐 Not logged in / token expired
+      if (res.status === 401) {
+        localStorage.clear();
+        setCart([]);
+        return;
+      }
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch cart");
+      }
+
+      const data = await res.json();
+      setCart(data);
+    } catch (err) {
+      setError(err.message || "Failed to load cart");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchCart();
+}, []);
 
   /* =========================
      UPDATE QUANTITY
   ========================= */
   const updateQuantity = async (cartId, newQty) => {
-    try {
-      const res = await fetch(
-        `http://localhost:3000/api/cart/${cartId}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ quantity: newQty })
-        }
-      );
+  try {
+    const API = import.meta.env.PUBLIC_API_BASE_URL;
+    const token = localStorage.getItem("token");
 
-      if (!res.ok) throw new Error("Update failed");
-
-      // If qty is 0, backend deletes item
-      if (newQty <= 0) {
-        setCart((prev) => prev.filter((i) => i.cart_id !== cartId));
-        return;
-      }
-
-      setCart((prev) =>
-        prev.map((item) =>
-          item.cart_id === cartId
-            ? { ...item, quantity: newQty }
-            : item
-        )
-      );
-    } catch (err) {
-      console.error(err);
+    if (!API) {
+      console.warn("PUBLIC_API_BASE_URL is not defined");
+      return;
     }
-  };
+
+    const res = await fetch(`${API}/api/cart/${cartId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: JSON.stringify({ quantity: newQty }),
+    });
+
+    // 🔐 Not logged in / token expired
+    if (res.status === 401) {
+      localStorage.clear();
+      window.location.href = "/LogIn";
+      return;
+    }
+
+    if (!res.ok) {
+      throw new Error("Update failed");
+    }
+
+    // 🗑️ If qty <= 0, backend deletes item
+    if (newQty <= 0) {
+      setCart((prev) => prev.filter((i) => i.cart_id !== cartId));
+      return;
+    }
+
+    // 🔄 Update UI quantity
+    setCart((prev) =>
+      prev.map((item) =>
+        item.cart_id === cartId
+          ? { ...item, quantity: newQty }
+          : item
+      )
+    );
+  } catch (err) {
+    console.error("Update quantity failed:", err);
+  }
+};
 
   /* =========================
      DELETE ITEM
   ========================= */
   const removeItem = async (cartId) => {
-    try {
-      await fetch(
-        `http://localhost:3000/api/cart/${cartId}`,
-        { method: "DELETE" }
-      );
+  try {
+    const API = import.meta.env.PUBLIC_API_BASE_URL;
+    const token = localStorage.getItem("token");
 
-      setCart((prev) =>
-        prev.filter((item) => item.cart_id !== cartId)
-      );
-    } catch (err) {
-      console.error(err);
+    if (!API) {
+      console.warn("PUBLIC_API_BASE_URL is not defined");
+      return;
     }
-  };
+
+    const res = await fetch(`${API}/api/cart/${cartId}`, {
+      method: "DELETE",
+      headers: {
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+    });
+
+    // 🔐 Not logged in / token expired
+    if (res.status === 401) {
+      localStorage.clear();
+      window.location.href = "/LogIn";
+      return;
+    }
+
+    if (!res.ok) {
+      throw new Error("Remove item failed");
+    }
+
+    // 🧹 Update UI
+    setCart((prev) =>
+      prev.filter((item) => item.cart_id !== cartId)
+    );
+  } catch (err) {
+    console.error("Remove item failed:", err);
+  }
+};
 
   /* =========================
      UI STATES

@@ -19,28 +19,26 @@ export default function Register() {
       password: formData.get("password"),
     };
 
-    try {
-      const res = await fetch(
-        import.meta.env.DEV
-          ? "http://localhost:3000/api/register"
-          : `${import.meta.env.PUBLIC_API_BASE}/api/register`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }
-      );
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.error || "Registration failed");
-
-      setSuccess(true);
-      setTimeout(() => (window.location.href = "/LogIn"), 1200);
-    } catch (err) {
-      setError(err.message || "Network error. Please try again.");
-    } finally {
-      setLoading(false);
+   try {
+  const res = await fetch(
+    `${import.meta.env.PUBLIC_API_BASE_URL}/api/register`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
     }
+  );
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data?.error || "Registration failed");
+
+  setSuccess(true);
+  setTimeout(() => (window.location.href = "/LogIn"), 1200);
+} catch (err) {
+  setError(err.message || "Network error. Please try again.");
+} finally {
+  setLoading(false);
+}
   }
 
   return (

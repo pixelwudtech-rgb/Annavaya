@@ -21,19 +21,21 @@ export default function SwiperSlider() {
   ========================= */
   useEffect(() => {
     const fetchProducts = async () => {
-      try {
-        const res = await fetch("http://localhost:3000/api/products");
-        const data = await res.json();
+    try {
+  const res = await fetch(
+    `${import.meta.env.PUBLIC_API_BASE_URL}/api/products`
+  );
+  const data = await res.json();
 
-        setProducts(data);
+  setProducts(data);
 
-        // Init qty state
-        const initialQty = {};
-        data.forEach((p) => (initialQty[p.id] = 1));
-        setQty(initialQty);
-      } catch (err) {
-        console.error("Failed to load products", err);
-      }
+  // Init qty state
+  const initialQty = {};
+  data.forEach((p) => (initialQty[p.id] = 1));
+  setQty(initialQty);
+} catch (err) {
+  console.error("Failed to load products", err);
+}
     };
 
     fetchProducts();

@@ -17,60 +17,106 @@ export default function AccountPage() {
   /* =========================
      FETCH ACCOUNT (JWT)
   ========================= */
-  useEffect(() => {
+useEffect(() => {
+  const token = localStorage.getItem("token");
+
+  // 🔐 No token → redirect to login
+  if (!token) {
+    window.location.href = "/LogIn";
+    return;
+  }
+
+  const fetchAccount = async () => {
+    try {
+      const API = import.meta.env.PUBLIC_API_BASE_URL;
+
+      if (!API) {
+        console.warn("PUBLIC_API_BASE_URL is not defined");
+        return;
+      }
+
+      const res = await fetch(`${API}/api/account`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // 🔐 Token expired / invalid
+      if (res.status === 401) {
+        localStorage.clear();
+        window.location.href = "/LogIn";
+        return;
+      }
+
+      if (!res.ok) {
+        throw new Error(`HTTP error ${res.status}`);
+      }
+
+      const data = await res.json();
+
+      setName(data.name || "");
+      setEmail(data.email || "");
+      setPhone(data.mobile || "");
+    } catch (err) {
+      console.error("Account fetch failed:", err);
+    }
+  };
+
+  fetchAccount();
+}, []);
+
+  /* =========================
+     SAVE ACCOUNT
+  ========================= */
+ const handleSave = async () => {
+  setSaving(true);
+
+  try {
+    const API = import.meta.env.PUBLIC_API_BASE_URL;
     const token = localStorage.getItem("token");
+
+    if (!API) {
+      console.warn("PUBLIC_API_BASE_URL is not defined");
+      return;
+    }
 
     if (!token) {
       window.location.href = "/LogIn";
       return;
     }
 
-    fetch("http://localhost:3000/api/account", {
+    const res = await fetch(`${API}/api/account`, {
+      method: "PUT",
       headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then(res => {
-        if (res.status === 401) {
-          localStorage.clear();
-          window.location.href = "/Account";
-          return;
-        }
-        return res.json();
-      })
-      .then(data => {
-        if (data) {
-          setName(data.name || "");
-          setEmail(data.email || "");
-         setPhone(data.mobile || "");
-        }
-      })
-      .catch(err => {
-        console.error("Account fetch failed:", err);
-      });
-  }, []);
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        mobile: phone,
+      }),
+    });
 
-  /* =========================
-     SAVE ACCOUNT
-  ========================= */
-  const handleSave = async () => {
-    setSaving(true);
-
-    try {
-      await fetch("http://localhost:3000/api/account", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`
-        },
-        body: JSON.stringify({ name, email, mobile: phone })
-      });
-    } catch (err) {
-      console.error("Save failed:", err);
-    } finally {
-      setSaving(false);
+    // 🔐 Token expired / invalid
+    if (res.status === 401) {
+      localStorage.clear();
+      window.location.href = "/LogIn";
+      return;
     }
-  };
+
+    if (!res.ok) {
+      throw new Error(`Save failed with status ${res.status}`);
+    }
+
+    // Optional: success feedback
+    console.log("Account updated successfully");
+  } catch (err) {
+    console.error("Save failed:", err);
+  } finally {
+    setSaving(false);
+  }
+};
 
   return (
     <section className="min-h-screen bg-[#FAFAFA] py-20">
